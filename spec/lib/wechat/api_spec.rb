@@ -89,4 +89,30 @@ describe Wechat::Api do
     end
   end
 
+  describe "#qrcode_create" do
+    data = {
+      :action_info => {:scene => {:scene_id => 123}}
+    }
+    specify "will post qrcode/code for create temporary qrcode with access_token and json data" do
+      data.merge!({
+        :action_name => "QR_SCENE",
+        :expire_seconds => 1800
+      })
+      expect(subject.client).to receive(:post).with("qrcode/create",
+           data.to_json,
+           params: {access_token: "access_token"},
+           content_type: :json).and_return(true)
+      expect(subject.qrcode_create(data)).to be true
+    end
+
+    specify "will post qrcode/code for create permanent qrcode with access_token and json data" do
+      data.merge!({ :action_name => "QR_LIMIT_SCENE" })
+      expect(subject.client).to receive(:post).with("qrcode/create",
+           data.to_json,
+           params: {access_token: "access_token"},
+           content_type: :json).and_return(true)
+      expect(subject.qrcode_create(data)).to be true
+    end
+  end
+
 end

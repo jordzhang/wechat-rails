@@ -44,7 +44,10 @@ class Wechat::Api
   def custom_message_send message
     post "message/custom/send", message.to_json, content_type: :json
   end
-  
+
+  def qrcode_create data
+    post "qrcode/create", data.to_json, content_type: :json
+  end
 
   protected
   def get path, headers={}
@@ -62,7 +65,7 @@ class Wechat::Api
     rescue Wechat::AccessTokenExpiredError => ex
       access_token.refresh
       retry unless (tries -= 1).zero?
-    end 
+    end
   end
 
 end
