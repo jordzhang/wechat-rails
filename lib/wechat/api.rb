@@ -49,6 +49,10 @@ class Wechat::Api
     post "qrcode/create", data.to_json, content_type: :json
   end
 
+  def showqrcode ticket
+    client.get "showqrcode", params: {ticket: ticket}
+  end
+
   protected
   def get path, headers={}
     with_access_token(headers[:params]){|params| client.get path, headers.merge(params: params)}
