@@ -31,7 +31,7 @@ module Wechat
   end
 
   def self.api
-    @api ||= Wechat::Api.new(self.config.appid, self.config.secret, self.config.access_token)
+    @api ||= Wechat::Api.new(self.config.appid, self.config.secret, self.config.access_token, self.config.api_base, self.config.file_base)
   end
 end
 

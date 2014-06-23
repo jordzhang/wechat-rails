@@ -7,8 +7,10 @@ class Wechat::Api
   API_BASE = "https://api.weixin.qq.com/cgi-bin/"
   FILE_BASE = "http://file.api.weixin.qq.com/cgi-bin/"
 
-  def initialize appid, secret, token_file
-    @client = Wechat::Client.new(API_BASE)
+  def initialize appid, secret, token_file, api_base=nil, file_base=nil
+    @api_base = api_base || API_BASE
+    @file_base = file_base || FILE_BASE
+    @client = Wechat::Client.new(@api_base)
     @access_token = Wechat::AccessToken.new(@client, appid, secret, token_file)
   end
 
@@ -34,11 +36,11 @@ class Wechat::Api
   end
 
   def media media_id
-    response = get "media/get", params:{media_id: media_id}, base: FILE_BASE, as: :file
+    response = get "media/get", params:{media_id: media_id}, base: @file_base, as: :file
   end
 
   def media_create type, file
-    post "media/upload", {upload:{media: file}}, params:{type: type}, base: FILE_BASE
+    post "media/upload", {upload:{media: file}}, params:{type: type}, base: @file_base
   end
 
   def custom_message_send message
